@@ -1,0 +1,249 @@
+{
+  "timestamp": "2026-10-01T03:59:55.412009+00:00",
+  "packages": [
+    {
+      "name": "anyio",
+      "version": "4.15.1"
+    },
+    {
+      "name": "certifi",
+      "version": "2026.7.22"
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.5.1"
+    },
+    {
+      "name": "cloudpickle",
+      "version": "3.1.2"
+    },
+    {
+      "name": "contourpy",
+      "version": "1.4.0"
+    },
+    {
+      "name": "cuda-bindings",
+      "version": "13.4.3"
+    },
+    {
+      "name": "cuda-pathfinder",
+      "version": "1.8.2"
+    },
+    {
+      "name": "cuda-toolkit",
+      "version": "13.0.3.0"
+    },
+    {
+      "name": "cycler",
+      "version": "0.12.1"
+    },
+    {
+      "name": "filelock",
+      "version": "4.0.1"
+    },
+    {
+      "name": "fonttools",
+      "version": "4.65.0"
+    },
+    {
+      "name": "fsspec",
+      "version": "2026.9.0"
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0"
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.9"
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1"
+    },
+    {
+      "name": "idna",
+      "version": "3.20"
+    },
+    {
+      "name": "Jinja2",
+      "version": "3.1.6"
+    },
+    {
+      "name": "kiwisolver",
+      "version": "1.5.1"
+    },
+    {
+      "name": "MarkupSafe",
+      "version": "3.0.3"
+    },
+    {
+      "name": "matplotlib",
+      "version": "3.11.2"
+    },
+    {
+      "name": "mpmath",
+      "version": "1.3.0"
+    },
+    {
+      "name": "networkx",
+      "version": "3.7"
+    },
+    {
+      "name": "numpy",
+      "version": "2.5.3"
+    },
+    {
+      "name": "nvidia-cublas",
+      "version": "13.1.1.3"
+    },
+    {
+      "name": "nvidia-cuda-cupti",
+      "version": "13.0.85"
+    },
+    {
+      "name": "nvidia-cuda-nvrtc",
+      "version": "13.0.88"
+    },
+    {
+      "name": "nvidia-cuda-runtime",
+      "version": "13.0.96"
+    },
+    {
+      "name": "nvidia-cudnn-cu13",
+      "version": "9.24.0.43"
+    },
+    {
+      "name": "nvidia-cufft",
+      "version": "12.0.0.61"
+    },
+    {
+      "name": "nvidia-cufile",
+      "version": "1.15.1.6"
+    },
+    {
+      "name": "nvidia-curand",
+      "version": "10.4.0.35"
+    },
+    {
+      "name": "nvidia-cusolver",
+      "version": "12.0.4.66"
+    },
+    {
+      "name": "nvidia-cusparse",
+      "version": "12.6.3.3"
+    },
+    {
+      "name": "nvidia-cusparselt-cu13",
+      "version": "0.8.1"
+    },
+    {
+      "name": "nvidia-ml-py",
+      "version": "13.610.43"
+    },
+    {
+      "name": "nvidia-nccl-cu13",
+      "version": "2.30.7"
+    },
+    {
+      "name": "nvidia-nvjitlink",
+      "version": "13.4.92"
+    },
+    {
+      "name": "nvidia-nvshmem-cu13",
+      "version": "3.4.5"
+    },
+    {
+      "name": "nvidia-nvtx",
+      "version": "13.0.85"
+    },
+    {
+      "name": "opencv-python",
+      "version": "5.0.0.93"
+    },
+    {
+      "name": "packaging",
+      "version": "26.3"
+    },
+    {
+      "name": "pillow",
+      "version": "12.3.0"
+    },
+    {
+      "name": "polars",
+      "version": "1.44.2"
+    },
+    {
+      "name": "polars-runtime-32",
+      "version": "1.44.2"
+    },
+    {
+      "name": "psutil",
+      "version": "7.2.2"
+    },
+    {
+      "name": "pycocotools",
+      "version": "2.0.11"
+    },
+    {
+      "name": "pyparsing",
+      "version": "3.3.3"
+    },
+    {
+      "name": "python-dateutil",
+      "version": "2.9.0.post0"
+    },
+    {
+      "name": "PyYAML",
+      "version": "6.0.3"
+    },
+    {
+      "name": "requests",
+      "version": "2.34.2"
+    },
+    {
+      "name": "setuptools",
+      "version": "84.0.0"
+    },
+    {
+      "name": "six",
+      "version": "1.17.0"
+    },
+    {
+      "name": "sympy",
+      "version": "1.14.0"
+    },
+    {
+      "name": "torch",
+      "version": "2.14.0"
+    },
+    {
+      "name": "torchvision",
+      "version": "0.29.0"
+    },
+    {
+      "name": "triton",
+      "version": "3.8.0"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0"
+    },
+    {
+      "name": "ultralytics",
+      "version": "8.4.160"
+    },
+    {
+      "name": "ultralytics-platform",
+      "version": "0.1.54"
+    },
+    {
+      "name": "ultralytics-thop",
+      "version": "2.1.6"
+    },
+    {
+      "name": "urllib3",
+      "version": "2.8.0"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "source_csv": "../underlying_values.csv",
+  "source_sha256": "768c483db9d70818500d4166b9bde41a4a1fb88da88fc94896507e8bcd0d1022",
+  "changes": "Overlapping point labels replaced with shape/color legend; x-axis starts at 0 with room beyond maximum; y-axis remains 0–1.",
+  "metric_values_unchanged": true,
+  "original_plots_preserved": true
+}

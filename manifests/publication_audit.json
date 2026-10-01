@@ -1,0 +1,113 @@
+{
+  "timestamp": "2026-10-01T09:50:25.126640+00:00",
+  "status": "PASS",
+  "frozen_runtime_sources_unchanged": true,
+  "current_source_sha256": {
+    "src/audit_shared_inputs.py": "ac0015bc1ffc67b2c9ced7ced907a48f75902ae1208fd55b4739e67e5025b84f",
+    "src/recompute_metrics.py": "487c7ddaa3e5f23e8c024547035b11c19584c6e71a3687f983ce66f091524e2b",
+    "src/cross_tier_report.py": "f2f52f7aedc7cecdb9a75edc86e5682bcd8a7f3c8a434ff61fe284c6d38eef02",
+    "src/final_artifact_checks.py": "2b672ed44fc3dd38e40da5a16a3d368c4a9bee6722c4f36a736b03c646e486b1",
+    "src/benchmark_adapter.py": "c13177d47f40dc59f83e5d5227d796e67c09d915c8573f169131cee39974260d",
+    "src/benchmark.py": "8bdd08207228eb67a6feda6832c375f70845fc8bb0270c2c2d6c73bb05de9ce6",
+    "src/publication_checks.py": "cca98d25d63a3b1ff2cca4c2530d0074b4e5f04c52e0f7cd43fbe87542b74bc2",
+    "src/audit_results.py": "ae621a87d29d339cdebde6febdfffacc0878cb9b595ed1618d6f0437f11ed074",
+    "src/report_base.py": "5225e20bf6010b3ebb8bde2950fbdc316f10d0774e37861a240c16e52c9b902e",
+    "src/repeat_clean_timing.py": "1df651127bf9ca3aeb51ba16e76d341c04c03bcf45837e69e6571a0cf781dea2",
+    "src/prepare_reporting.py": "42ed455ccbbe90898fdb75a9d5953eae071ba2d105b18f93b88c26213d1b5dcf",
+    "src/prepare_experiment.py": "fb5ec9e512c7d260e6eb2ad0d4c0a619a272a7731f16fe03e0a88542ddbe260c",
+    "src/freeze_inputs.py": "3f3a0a32ce0f1e11f8447a06e3867d4489bbf54ab30ca9b72fd234ba7e04b1aa",
+    "src/validate.py": "1e33433f12feb05787e3cda1f76683a631ff7d055646f71335ced108b42b4654",
+    "src/frozen_pilot/mots.py": "01e4a750d8ed6bd1d0002a7b906f351ff9d7b59d3f6e31db633cd4b463b0f51d",
+    "src/frozen_pilot/visualize.py": "6188a131ae284dfce825903f3cd3b33e5aa9d6638d51c1d9a32bddf0016cffbf",
+    "src/frozen_pilot/metrics.py": "3f39f8bed8d62677ea1f6fbdce4415e04ccaede8b0ae0425fd63f78594980721",
+    "src/frozen_pilot/test_pipeline.py": "5e785fbf0619c5ad7818145ae29c436aec5bbe572f5121ff860e1838dab9a0a2",
+    "src/frozen_pilot/yolo_adapter.py": "d739c5477490b805773e1320e744052152dd1acc9e03719fed4a588ed7b2a36f"
+  },
+  "report_sha256": "6833cb35d9053c6ad8a3ad6aa179166880c1eae55f60724da98a7afbd463d4b6",
+  "insights_sha256": "5ce99b5b499e6c4fecfaa3c7e40297e5c4f9f92f822bdd66e93ef686270597ba",
+  "reviewed_file_count": 240,
+  "reviewed_total_bytes": 26264370,
+  "largest_files": [
+    {
+      "path": "metrics/gt_instances.csv",
+      "bytes": 2515165
+    },
+    {
+      "path": "metrics/benchmark-20261001T0352Z/per_instance/yolo26l-seg.pt.csv",
+      "bytes": 1720206
+    },
+    {
+      "path": "metrics/benchmark-20261001T0352Z/per_instance/yolo11l-seg.pt.csv",
+      "bytes": 1669263
+    },
+    {
+      "path": "metrics/benchmark-20261001T0352Z/per_instance/yolov8l-seg.pt.csv",
+      "bytes": 1668966
+    },
+    {
+      "path": "metrics/benchmark-20261001T0352Z/per_instance/yolov9c-seg.pt.csv",
+      "bytes": 1655083
+    },
+    {
+      "path": "manifests/images.json",
+      "bytes": 749766
+    },
+    {
+      "path": "reports/benchmark-20261001T0352Z/frozen_inputs/manifests/images.json",
+      "bytes": 749766
+    },
+    {
+      "path": "timing/benchmark-20261001T0352Z/clean_repetition/all_frames.csv",
+      "bytes": 393221
+    },
+    {
+      "path": "metrics/benchmark-20261001T0352Z/per_frame/yolov8l-seg.pt.csv",
+      "bytes": 344292
+    },
+    {
+      "path": "metrics/benchmark-20261001T0352Z/per_frame/yolov9c-seg.pt.csv",
+      "bytes": 343427
+    },
+    {
+      "path": "metrics/benchmark-20261001T0352Z/per_frame/yolo11l-seg.pt.csv",
+      "bytes": 340202
+    },
+    {
+      "path": "metrics/benchmark-20261001T0352Z/per_frame/yolo26l-seg.pt.csv",
+      "bytes": 339371
+    },
+    {
+      "path": "outputs/visualizations/benchmark-20261001T0352Z/yolo26l-seg/MOTS20-09_000263.jpg",
+      "bytes": 280467
+    },
+    {
+      "path": "outputs/visualizations/benchmark-20261001T0352Z/yolov8l-seg/MOTS20-09_000263.jpg",
+      "bytes": 279720
+    },
+    {
+      "path": "outputs/visualizations/benchmark-20261001T0352Z/yolo11l-seg/MOTS20-09_000263.jpg",
+      "bytes": 279356
+    },
+    {
+      "path": "outputs/visualizations/benchmark-20261001T0352Z/yolov9c-seg/MOTS20-09_000263.jpg",
+      "bytes": 279235
+    },
+    {
+      "path": "outputs/visualizations/benchmark-20261001T0352Z/yolo26l-seg/MOTS20-09_000525.jpg",
+      "bytes": 268968
+    },
+    {
+      "path": "outputs/visualizations/benchmark-20261001T0352Z/yolov9c-seg/MOTS20-09_000525.jpg",
+      "bytes": 268499
+    },
+    {
+      "path": "outputs/visualizations/benchmark-20261001T0352Z/yolov8l-seg/MOTS20-09_000525.jpg",
+      "bytes": 268390
+    },
+    {
+      "path": "outputs/visualizations/benchmark-20261001T0352Z/yolo11l-seg/MOTS20-09_000525.jpg",
+      "bytes": 268081
+    }
+  ],
+  "raw_predictions_weights_environments_and_datasets_excluded": true
+}

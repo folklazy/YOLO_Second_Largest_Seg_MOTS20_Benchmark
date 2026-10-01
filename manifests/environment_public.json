@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-10-01T09:44:31.151403+00:00",
+  "hostname": "ai-dev-server",
+  "os": "Linux-6.8.0-139-generic-x86_64-with-glibc2.39",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "packages": {
+    "ultralytics": "8.4.160",
+    "torch": "2.14.0",
+    "torchvision": "0.29.0",
+    "numpy": "2.5.3",
+    "pycocotools": "2.0.11",
+    "Pillow": "12.3.0",
+    "opencv-python": "5.0.0.93",
+    "matplotlib": "3.11.2"
+  },
+  "torch_version": "2.14.0+cu130",
+  "torchvision_version": "0.29.0+cu130",
+  "cuda_runtime": "13.0",
+  "cuda_available": true,
+  "CUDA_VISIBLE_DEVICES": null,
+  "gpu": "_CudaDeviceProperties(name='Tesla T4', major=7, minor=5, total_memory=14911MB, multi_processor_count=40, uuid=568de064-e614-a45c-96c3-dbd80b8db026, pci_bus_id=0, pci_device_id=16, pci_domain_id=0, L2_cache_size=4MB)",
+  "driver_and_gpu": "name, driver_version, memory.total [MiB]\nTesla T4, 580.178.04, 15360 MiB\n",
+  "status": "PASS",
+  "raw_initial_environment_sha256": "9e62f90d12e5681757a14fd9da2ac367015489cdaee839c043c07bc834138556"
+}

@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "timestamp": "2026-10-01T09:49:47.088834+00:00",
+  "pooled_counts_equal_sequence_and_frame_sums": true,
+  "fixed_metrics_recomputed_from_counts": true,
+  "timing_stage_sums_and_fps_verified": true,
+  "cross_tier_absolute_relative_and_percentage_point_deltas_verified": true,
+  "source_syntax_valid": true,
+  "required_thai_sections_present": true,
+  "exact_48_predetermined_visualizations": true,
+  "all_15_requested_plots_and_values_present": true,
+  "report_sha256": "6833cb35d9053c6ad8a3ad6aa179166880c1eae55f60724da98a7afbd463d4b6",
+  "insights_sha256": "5ce99b5b499e6c4fecfaa3c7e40297e5c4f9f92f822bdd66e93ef686270597ba"
+}

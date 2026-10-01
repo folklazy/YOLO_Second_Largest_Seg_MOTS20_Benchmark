@@ -1,0 +1,182 @@
+[
+  {
+    "item": "Frozen config/protocol",
+    "status": "PASS",
+    "evidence": "SHA256 at Phase 4 start versus final"
+  },
+  {
+    "item": "Frozen implementation",
+    "status": "PASS",
+    "evidence": "Every benchmark/frozen-pilot Python source"
+  },
+  {
+    "item": "Validated evaluator and pilot preserved",
+    "status": "PASS",
+    "evidence": "Original and frozen snapshot hashes"
+  },
+  {
+    "item": "Image manifest unchanged",
+    "status": "PASS",
+    "evidence": "Ordered list, dimensions and original image hashes"
+  },
+  {
+    "item": "Predetermined sample lists unchanged",
+    "status": "PASS",
+    "evidence": "Preflight/timing/visualization hashes frozen before full run"
+  },
+  {
+    "item": "Dataset images unchanged",
+    "status": "PASS",
+    "evidence": "Rehash every one of 2,862 original image files"
+  },
+  {
+    "item": "Ground truth and sequence metadata unchanged",
+    "status": "PASS",
+    "evidence": "All GT and seqinfo SHA256"
+  },
+  {
+    "item": "Checkpoints unchanged",
+    "status": "PASS",
+    "evidence": "All four checkpoint SHA256"
+  },
+  {
+    "item": "YOLO26l-Seg exact frame list/count",
+    "status": "PASS",
+    "evidence": "Successful metadata plus per-frame file audit"
+  },
+  {
+    "item": "YOLO26l-Seg saved predictions and tensor shapes",
+    "status": "PASS",
+    "evidence": "Lossless RLE/class/score/dimensions checked on every saved frame"
+  },
+  {
+    "item": "YOLO11l-Seg exact frame list/count",
+    "status": "PASS",
+    "evidence": "Successful metadata plus per-frame file audit"
+  },
+  {
+    "item": "YOLO11l-Seg saved predictions and tensor shapes",
+    "status": "PASS",
+    "evidence": "Lossless RLE/class/score/dimensions checked on every saved frame"
+  },
+  {
+    "item": "YOLOv8l-Seg exact frame list/count",
+    "status": "PASS",
+    "evidence": "Successful metadata plus per-frame file audit"
+  },
+  {
+    "item": "YOLOv8l-Seg saved predictions and tensor shapes",
+    "status": "PASS",
+    "evidence": "Lossless RLE/class/score/dimensions checked on every saved frame"
+  },
+  {
+    "item": "YOLOv9c-Seg exact frame list/count",
+    "status": "PASS",
+    "evidence": "Successful metadata plus per-frame file audit"
+  },
+  {
+    "item": "YOLOv9c-Seg saved predictions and tensor shapes",
+    "status": "PASS",
+    "evidence": "Lossless RLE/class/score/dimensions checked on every saved frame"
+  },
+  {
+    "item": "Common ap_max_dets",
+    "status": "PASS",
+    "evidence": "200"
+  },
+  {
+    "item": "Common fixed_confidence",
+    "status": "PASS",
+    "evidence": "0.25"
+  },
+  {
+    "item": "Common ap_confidence_floor",
+    "status": "PASS",
+    "evidence": "0.001"
+  },
+  {
+    "item": "Common nms_iou",
+    "status": "PASS",
+    "evidence": "0.7"
+  },
+  {
+    "item": "Common max_detections",
+    "status": "PASS",
+    "evidence": "1000"
+  },
+  {
+    "item": "Common precision",
+    "status": "PASS",
+    "evidence": "fp32"
+  },
+  {
+    "item": "Common imgsz",
+    "status": "PASS",
+    "evidence": "640"
+  },
+  {
+    "item": "Common batch",
+    "status": "PASS",
+    "evidence": "1"
+  },
+  {
+    "item": "Common rect",
+    "status": "PASS",
+    "evidence": "False"
+  },
+  {
+    "item": "Common retina_masks",
+    "status": "PASS",
+    "evidence": "True"
+  },
+  {
+    "item": "Common matching_iou",
+    "status": "PASS",
+    "evidence": "0.5"
+  },
+  {
+    "item": "Common ignore_prediction_ioa",
+    "status": "PASS",
+    "evidence": "0.5"
+  },
+  {
+    "item": "NMS one-to-many path and CUDA FP32",
+    "status": "PASS",
+    "evidence": "Backend state asserted at load"
+  },
+  {
+    "item": "Same evaluator manifest",
+    "status": "PASS",
+    "evidence": "One source_manifest SHA256"
+  },
+  {
+    "item": "Same frozen protocol and config",
+    "status": "PASS",
+    "evidence": "Each model metadata"
+  },
+  {
+    "item": "Three clean timing rounds per model",
+    "status": "PASS",
+    "evidence": "Contaminated rounds excluded from primary table"
+  },
+  {
+    "item": "Same exact timing frame order for every round",
+    "status": "PASS",
+    "evidence": "100 identical ordered frame keys × 12 runs"
+  },
+  {
+    "item": "No contaminated timing in primary table",
+    "status": "PASS",
+    "evidence": "Before/during/after telemetry and other-process audit"
+  },
+  {
+    "item": "Complete accuracy metrics",
+    "status": "PASS",
+    "evidence": "4 overall plus 16 sequence records"
+  },
+  {
+    "item": "Complete timing metrics",
+    "status": "PASS",
+    "evidence": "Dedicated timing, evaluator preparation excluded"
+  }
+]

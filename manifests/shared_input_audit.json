@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-10-01T03:45:35.621933+00:00",
+  "status": "PASS",
+  "frames": 2862,
+  "errors": [],
+  "reference_hashes": {
+    "REPORT.md": "428baadc80d184ad1a6d1341b235775bbc1b479cb01db7420a5ce2e8c97096c3",
+    "EXPERIMENT_PROTOCOL.md": "465a6e60b371b29f250eeb8bb5ac4c218be20f114e9e42f7979e5d45aca19366",
+    "manifests/dataset_manifest.json": "43cd08407a5511877784dfde3d112f37b7db35a855c2bcd4f6ebccd274f91170",
+    "manifests/images.json": "3bdd87baddcbae32c7ed9ad7ec01bad613d0e0b837b84c4a3fe45eb1dc3b2d78",
+    "manifests/preflight_frames.json": "5e66c48b3fd844dcd7ce9bb770c6f65df37efb2846b4ae05ace49c752eb6f601",
+    "manifests/timing_frames.json": "5e66c48b3fd844dcd7ce9bb770c6f65df37efb2846b4ae05ace49c752eb6f601",
+    "manifests/visualization_frames.json": "b64d28af8312c544f9aff083dccc9fb4a9ca7e28d8a43617388869a38f5b60c6"
+  }
+}

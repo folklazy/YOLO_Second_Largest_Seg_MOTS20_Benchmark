@@ -1,0 +1,23 @@
+creating index...
+index created!
+Loading and preparing results...
+DONE (t=0.39s)
+creating index...
+index created!
+Running per image evaluation...
+Evaluate annotation type *segm*
+DONE (t=7.08s).
+Accumulating evaluation results...
+DONE (t=0.29s).
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=   all | maxDets=100 ] = -1.000
+ Average Precision  (AP) @[ IoU=0.50      | area=   all | maxDets=200 ] = 0.903
+ Average Precision  (AP) @[ IoU=0.75      | area=   all | maxDets=200 ] = 0.671
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= small | maxDets=200 ] = 0.004
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area=medium | maxDets=200 ] = 0.365
+ Average Precision  (AP) @[ IoU=0.50:0.95 | area= large | maxDets=200 ] = 0.751
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=  1 ] = 0.096
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets= 10 ] = 0.594
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=   all | maxDets=200 ] = 0.619
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= small | maxDets=200 ] = 0.025
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area=medium | maxDets=200 ] = 0.427
+ Average Recall     (AR) @[ IoU=0.50:0.95 | area= large | maxDets=200 ] = 0.781

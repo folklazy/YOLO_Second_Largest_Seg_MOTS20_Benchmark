@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-10-01T09:44:34.060896+00:00",
+  "status": "PASS",
+  "frozen_runtime_sources_unchanged": true,
+  "archive_unchanged": true,
+  "experiment1_reference_unchanged": true,
+  "exact_shared_lists_and_gt_descriptives": true,
+  "environment_unchanged": true,
+  "presentation_source_reference_sha256": "a2190f5cf3860e2c296ade53cf13ccdf057b5761246b0bde4bc8a43d195cd212",
+  "presentation_source_sha256": "5cb43dbdfee5384f5a22e0c392fc74ffc55c64bef38765b82a725ea7f95b261d",
+  "post_freeze_reporting_sources": {
+    "src/recompute_metrics.py": "487c7ddaa3e5f23e8c024547035b11c19584c6e71a3687f983ce66f091524e2b",
+    "src/final_artifact_checks.py": "2b672ed44fc3dd38e40da5a16a3d368c4a9bee6722c4f36a736b03c646e486b1",
+    "src/audit_results.py": "ae621a87d29d339cdebde6febdfffacc0878cb9b595ed1618d6f0437f11ed074"
+  }
+}

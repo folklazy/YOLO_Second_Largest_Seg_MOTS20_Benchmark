@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-10-01T03:59:55.410902+00:00",
+  "hashes": {
+    "REPORT.md": "428baadc80d184ad1a6d1341b235775bbc1b479cb01db7420a5ce2e8c97096c3",
+    "metrics/comparison_summary.csv": "5986db7f575ed1ad21097ae51c3945cad7cc19de14fd50f26e12e53a18235d36",
+    "metrics/per_model.csv": "23a1241af6bb7c53257dc7a9a98f99a03ed9d657f0d2713e5c5bf81bdd057fcc",
+    "timing/benchmark-20260929T0520Z/clean_repetition/summary.csv": "3ad7c673d0f95a7bbf681218c6b9b77f778d0a27416bc3576cb270116ec7bf1e"
+  }
+}

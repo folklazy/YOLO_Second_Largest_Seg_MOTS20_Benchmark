@@ -1,0 +1,11 @@
+# Environment record only; do not reinstall or change CUDA builds.
+ultralytics==8.4.160
+torch==2.14.0
+torchvision==0.29.0
+numpy==2.5.3
+pycocotools==2.0.11
+Pillow==12.3.0
+opencv-python==5.0.0.93
+PyYAML==6.0.3
+matplotlib==3.11.2
+# PyTorch and torchvision runtime builds: +cu130
