@@ -12,10 +12,16 @@ logs/ultralytics_config/
 logs/
 !logs/.gitkeep
 
-# Intentionally retained qualitative selection and evidence (images remain generated).
+# Intentionally retained qualitative selection and evidence.
 !outputs/visualizations/
 outputs/visualizations/*
 !outputs/visualizations/qualitative/
 outputs/visualizations/qualitative/*
 !outputs/visualizations/qualitative/CASE_SELECTION.md
 !outputs/visualizations/qualitative/CASE_EVIDENCE.json
+
+# Publish only the four images embedded in the canonical visual analysis.
+!outputs/visualizations/qualitative/case_01_comparison.png
+!outputs/visualizations/qualitative/case_02_comparison.png
+!outputs/visualizations/qualitative/case_03_comparison.png
+!outputs/visualizations/qualitative/case_04_comparison.png
