@@ -103,9 +103,3 @@ Historical PASS WITH WARNINGS retained: CPU NNPACK warnings during complexity in
 ## 12. Relation to Full Scaling Study
 
 [Master Study](https://github.com/folklazy/YOLO_Instance_Segmentation_MOTS20_Scaling_Study) — this is one tier only. The 17-model synthesis remains gated on all five tiers and explicit authorization.
-
-## Qualitative Analysis
-
-Same-frame visual evidence, observed failures and interpretation are in
-[PRESENTATION_SUMMARY_TH.md](PRESENTATION_SUMMARY_TH.md).
-Comparisons reuse saved RLE predictions and original MOTS20 frames; no inference rerun or benchmark value changes.

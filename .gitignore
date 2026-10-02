@@ -11,3 +11,11 @@ logs/ultralytics_config/
 **/environment.json
 logs/
 !logs/.gitkeep
+
+# Intentionally retained qualitative selection and evidence (images remain generated).
+!outputs/visualizations/
+outputs/visualizations/*
+!outputs/visualizations/qualitative/
+outputs/visualizations/qualitative/*
+!outputs/visualizations/qualitative/CASE_SELECTION.md
+!outputs/visualizations/qualitative/CASE_EVIDENCE.json
