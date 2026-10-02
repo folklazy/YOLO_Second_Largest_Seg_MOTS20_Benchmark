@@ -2,6 +2,17 @@
 
 **Status: PASS WITH WARNINGS — 4 models × 2,862 accuracy frames; 3 clean timing rounds/model.**
 
+## สรุป Benchmark แบบกระชับ
+
+- เปรียบเทียบ **YOLO26l-Seg, YOLO11l-Seg, YOLOv9c-Seg และ YOLOv8l-Seg** รุ่น segmentation **ใหญ่เป็นอันดับสองที่มีให้ใช้จากแต่ละตระกูล** โดย YOLOv9 ใช้รุ่น c และทั้งสี่โมเดลมี capacity ไม่เท่ากัน
+- ใช้ **MOTS20 train ครบ 2,862 ภาพ และ 26,894 Person GT instances** ซึ่งนับคนแยกตามภาพ ไม่ใช่จำนวนคนไม่ซ้ำทั้งวิดีโอ
+- ใช้ pretrained checkpoints โดย **ไม่ฝึกใหม่และไม่ fine-tune** เพื่อดูการนำโมเดลสำเร็จรูปมาใช้กับข้อมูลชุดนี้
+- ทุกโมเดลใช้ภาพและเกณฑ์เดียวกับ Experiment 1: **Tesla T4, FP32, batch 1, input 640×640 และ NMS-based prediction** โดย preflight ยืนยันให้ใช้ AP maxDet=200 ร่วมกันได้
+- **YOLO26l-Seg เด่นด้าน accuracy และสมดุลโดยรวมในผลชุดนี้**: Mask mAP50-95 สูงสุด **0.586237**, Recall สูงสุด **0.834387**, pipeline mean ต่ำสุด **76.403 ms** และ peak allocated VRAM ต่ำสุด **777.520 MiB**
+- **YOLOv9c-Seg มี inference mean ต่ำสุด 35.293 ms** แต่เร็วกว่า YOLO11l เพียง **0.094 ms** และ pipeline ของ YOLO26l/YOLO11l/YOLOv9c ต่างกันไม่ถึง **0.52 ms** จึงไม่ควรตีความว่าชนะด้านความเร็วอย่างมีนัยสำคัญ
+- เมื่อเทียบกับรุ่นใหญ่สุดของตระกูลเดียวกัน **mAP ลด 0.461–1.900 percentage points แลกกับ inference latency ที่ลด 40.91–49.95%** แต่ VRAM ไม่ได้ลดตามขนาดโมเดลเสมอไป เช่น v9e→v9c ลด peak allocated เพียง **1.98%**
+- ผลนี้ช่วยเลือกตัวแทนไปทดลองต่อ แต่ **ยังไม่ยืนยันความทนทานใน CCTV จริงทุกสภาพ** และไม่ใช่การพิสูจน์ความเหนือกว่าของ architecture ภายใต้ capacity ที่เท่ากัน; เวลา pipeline ที่รายงานไม่รวม RLE preparation และ disk I/O
+
 - 📊 อ่านสรุป Benchmark แบบเข้าใจง่าย → [BENCHMARK_INSIGHTS_TH.md](BENCHMARK_INSIGHTS_TH.md)
 - 📄 Technical Benchmark Report → [REPORT.md](REPORT.md)
 - 🧪 Experimental Protocol → [EXPERIMENT_PROTOCOL.md](EXPERIMENT_PROTOCOL.md)
