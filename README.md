@@ -18,6 +18,41 @@
 - 🧪 Experimental Protocol → [EXPERIMENT_PROTOCOL.md](EXPERIMENT_PROTOCOL.md)
 - [Experiment 1: largest available variants](https://github.com/folklazy/YOLO_Large_Seg_MOTS20_Benchmark)
 
+## รายละเอียด Dataset ที่ใช้
+
+ใช้ **MOTS20 train ทั้ง 4 sequences รวม 2,862 ภาพ** เป็นภาพต่อเนื่องจากวิดีโอที่มี Ground Truth (GT) แบบ **instance segmentation**: ระบุพื้นที่พิกเซลของคนแต่ละคนด้วย mask และมี object ID แยกบุคคล การทดลองนี้ประเมินการแยกคน **รายภาพ** ไม่ได้ประเมินการติดตามคนข้ามเฟรมหรือ tracking metrics
+
+| Sequence | จำนวนภาพ | ความละเอียดต้นฉบับ (กว้าง × สูง) | Person GT instances | Ignore annotations |
+| --- | ---: | --- | ---: | ---: |
+| MOTS20-02 | 600 | 1920 × 1080 | 7,039 | 600 |
+| MOTS20-05 | 837 | 640 × 480 | 6,570 | 802 |
+| MOTS20-09 | 525 | 1920 × 1080 | 4,774 | 525 |
+| MOTS20-11 | 900 | 1920 × 1080 | 8,511 | 900 |
+| **รวม** | **2,862** | สองความละเอียด | **26,894** | **2,827** |
+
+**อ่านจำนวนเหล่านี้อย่างไร**
+
+- **26,894 Person GT instances** คือจำนวนคนที่ติดป้ายกำกับรวมทุกภาพ เฉลี่ยประมาณ **9.40 คนต่อภาพ** คนเดิมที่ปรากฏหลายเฟรมถูกนับหลายครั้ง จึงไม่ใช่จำนวนคนไม่ซ้ำทั้งชุด
+- **Person GT ใช้ class 2** ส่วนผลทำนายจาก YOLO ใช้ COCO class 0 = `person` เป็นคนละระบบหมายเลขคลาสที่ evaluator จับคู่ให้ตรงกัน
+- **Ignore ใช้ class 10** จำนวน 2,827 คือจำนวน annotations ของพื้นที่ ignore รวมทุกเฟรม ไม่ใช่จำนวนคนหรือจำนวน predictions ที่ถูก ignore โดย evaluator จะจับคู่กับ Person GT ก่อน แล้วจึงไม่นับ unmatched prediction เป็น FP หากพื้นที่ของ prediction ทับกับ union ของ ignore masks ตั้งแต่ 50% ขึ้นไป
+
+**ไฟล์ข้อมูลและวิธีใช้ในการทดลอง**
+
+- ภาพต้นฉบับ: `datasets/MOTS/MOTS/train/<sequence>/img1/`
+- GT: `datasets/MOTS/MOTS/train/<sequence>/gt/gt.txt` โดย mask เก็บแบบ **RLE** ซึ่งบีบอัดตำแหน่งพิกเซลและถอดกลับเป็น mask ได้
+- ใช้ GT ที่มากับแต่ละ sequence เท่านั้น ไม่ใช้ `datasets/MOTSLabels/MOTSLabels/` เป็น GT อีกชุด และไม่ใช้ MOTS20 test คำนวณ accuracy ในการทดลองนี้
+- แม้โฟลเดอร์ชื่อ `train` แต่ครั้งนี้ใช้สำหรับ **ประเมิน pretrained models เท่านั้น** ไม่มีการฝึกใหม่, fine-tune, ดัดแปลงภาพต้นฉบับ หรือสร้าง split ใหม่
+- ก่อนเข้าโมเดล ทุกภาพผ่าน resize แบบคงสัดส่วนและเติมขอบให้เป็น **640 × 640**; การประเมิน mask ใช้ความละเอียดต้นฉบับ จึงไม่ควรเข้าใจว่าภาพใน dataset มีขนาด 640 × 640 อยู่แล้ว
+- ใช้ **100 ภาพเดิม** สำหรับ preflight และ timing และ **12 ภาพเดิม** สำหรับ visualization ตามรายการที่กำหนดไว้ใน Experiment 1 ทั้งหมดเป็นส่วนหนึ่งของ 2,862 ภาพ ไม่ใช่ชุดข้อมูลเพิ่ม
+
+**ขนาดคนและข้อจำกัดของข้อมูล**
+
+พื้นที่ mask คนหารด้วยพื้นที่ภาพต้นฉบับมีค่ามัธยฐานประมาณ **0.627%**; percentile 10 และ 90 อยู่ที่ประมาณ **0.081%** และ **5.875%** ตามลำดับ จึงมีความหลากหลายของขนาดคนในภาพ โดยไม่ได้กำหนดเกณฑ์ small/medium/large เพิ่มเอง จำนวนคนต่อภาพใช้บรรยายความหนาแน่น ไม่ใช่ป้ายระดับการบังกัน (occlusion severity)
+
+ภาพวิดีโอต่อเนื่องมีความสัมพันธ์กัน จึงไม่ใช่ภาพอิสระ 2,862 ตัวอย่าง และข้อมูลชุดนี้ยังไม่ครอบคลุมการทดสอบ CCTV แบบควบคุม blur, low-light, มุมกล้อง หรือระดับ occlusion โดยเฉพาะ
+
+ตรวจยืนยันแล้วว่ารายการ/ลำดับภาพ, image hashes, GT hashes, sequence metadata และความละเอียดตรงกับ Experiment 1 ดูหลักฐานใน [dataset manifest](manifests/dataset_manifest.json), [shared input audit](manifests/shared_input_audit.json) และ [ข้อมูลขนาดคน](metrics/person_size_distribution.json)
+
 Compare official pretrained `yolo26l-seg.pt`, `yolo11l-seg.pt`,
 `yolov8l-seg.pt` and `yolov9c-seg.pt` on all 2,862 MOTS20 train frames.
 YOLOv9 c is its second-largest available segmentation variant in this family;
