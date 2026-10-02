@@ -1,0 +1,41 @@
+{
+  "notes": "Selected fields from preserved metadata; raw prediction records remain local. No inference or metrics recomputation.",
+  "records": [
+    {
+      "model": "YOLO26l-Seg",
+      "source": "predictions/benchmark-20261001T0352Z/accuracy/yolo26l-seg/metadata.json",
+      "source_sha256": "87b5088e7496dd7cbaa0ca60443689ff3ab939f3153f9025db6a458bdcee2a40",
+      "runtime_parameters": 27965436,
+      "status": "PASS",
+      "images_successful": 2862,
+      "images_failed": 0
+    },
+    {
+      "model": "YOLO11l-Seg",
+      "source": "predictions/benchmark-20261001T0352Z/accuracy/yolo11l-seg/metadata.json",
+      "source_sha256": "4118b0054954ba46e53139603344bb3366aa365854743ddddef91c3d2488b121",
+      "runtime_parameters": 27646272,
+      "status": "PASS",
+      "images_successful": 2862,
+      "images_failed": 0
+    },
+    {
+      "model": "YOLOv9c-Seg",
+      "source": "predictions/benchmark-20261001T0352Z/accuracy/yolov9c-seg/metadata.json",
+      "source_sha256": "e08abaf8c9999c32518aac695a0ad71970ff1a6239877dbf30522fe63491c2ae",
+      "runtime_parameters": 27686208,
+      "status": "PASS",
+      "images_successful": 2862,
+      "images_failed": 0
+    },
+    {
+      "model": "YOLOv8l-Seg",
+      "source": "predictions/benchmark-20261001T0352Z/accuracy/yolov8l-seg/metadata.json",
+      "source_sha256": "8ba98ce2a57034f909c59f529d30ad9afbd6af403d3430eb213205f02aef452a",
+      "runtime_parameters": 45973568,
+      "status": "PASS",
+      "images_successful": 2862,
+      "images_failed": 0
+    }
+  ]
+}
