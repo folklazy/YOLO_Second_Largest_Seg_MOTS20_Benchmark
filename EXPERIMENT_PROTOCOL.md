@@ -1,43 +1,166 @@
-# โพรโทคอล Second-largest (L/C) — YOLO Instance Segmentation บน MOTS20
+# Experiment 2: Second-largest available variant comparison on MOTS20
 
-## 1. สถานะและหลักฐานต้นฉบับ
+Status: frozen design before preflight. The sole predeclared selection is common
+AP maxDet from the saved 100-frame preflight. Its decision will be appended here
+before any full accuracy run. No training, adaptation, threshold optimization or
+other segmentation family is used. This is not a parameter-matched comparison.
 
-รอบ `benchmark-20261001T0352Z` เสร็จครบ 4 โมเดล ใช้โพรโทคอลที่กำหนดไว้ก่อนการทดลอง เอกสารนี้จัดรูปแบบภาษาไทยจากค่าที่ใช้จริง ไม่เปลี่ยนการตั้งค่าหรือคำนวณผลใหม่
-[โพรโทคอลเดิมพร้อมบันทึก preflight](reports/archive/EXPERIMENT_PROTOCOL.md.pre-thai-language-20261006T071728Z) คง byte เดิมสำหรับตรวจค่า hash ใน STANDARDIZATION.json และหลักฐานการตรึงรอบทดลอง
+## Inputs and order
 
-## 2. โมเดลและข้อมูล
+Official Ultralytics `yolo26l-seg.pt`, `yolo11l-seg.pt`, `yolov8l-seg.pt`,
+`yolov9c-seg.pt` in workspace `models/`. YOLOv9 c is its second-largest available supported
+segmentation variant; there is no official v9 L segmentation checkpoint here. L/c do not imply equal capacity. Record local unfused
+parameter counts, NMS-path GFLOPs when available, bytes and SHA256; also record
+runtime fused parameters separately. Official sources:
+[YOLO26](https://docs.ultralytics.com/models/yolo26/),
+[YOLO11](https://docs.ultralytics.com/models/yolo11/),
+[YOLOv8](https://docs.ultralytics.com/models/yolov8/),
+[YOLOv9](https://docs.ultralytics.com/models/yolov9/).
 
-โมเดลตามลำดับแสดงผล: `yolo26l-seg.pt`, `yolo11l-seg.pt`, `yolov9c-seg.pt`, `yolov8l-seg.pt` ใช้ pretrained ไม่ฝึกเพิ่มไม่ปรับจูนและไม่ปรับตัวตามข้อมูลการทดสอบเทียบรุ่นที่มีให้ใช้ มิได้ทำให้ความจุหรือการฝึกเดิมเท่ากัน
-ข้อมูลจาก `datasets/MOTS/MOTS/train/` เฉพาะ MOTS20-02, MOTS20-05, MOTS20-09, MOTS20-11 ตามลำดับ แล้วเรียงเฟรมขึ้น รวม 2,862 เฟรมและ Person GT รายเฟรม 26,894 instances GT อยู่ใน `gt/gt.txt`; Person class 2, ignore class 10 ตรวจภาพ มิติ ลำดับและ hash ตาม manifest เดิม ไม่แก้ข้อมูลและไม่สร้าง split ใหม่
+Only `datasets/MOTS/MOTS/train`, sequences 02, 05, 09, 11 in that order, then
+ascending frame number: 2,862 frames. GT is each sequence's bundled `gt/gt.txt`.
+Validate all images and GT/ignore RLE; save individual image SHA256, GT hashes,
+metadata hashes and source dimensions. Recheck hashes at completion. Inputs
+and pilot remain unchanged. Save environment/package freeze and GPU state.
 
-## 3. การเตรียมภาพและ inference
+Preflight: 25 evenly spaced frames per sequence including endpoints, integer
+rounding of linspace(1, sequence_length, 25). Save exact list before results.
+Timing uses that same 100-frame list. Predetermined visualization uses 3 equally
+spaced frames per sequence (12 total), frozen before results. Samples overlap
+accuracy population intentionally; this is pretrained inference, not fitting.
 
-ใช้ adapter และตัวประเมินที่ตรึงจาก Largest ตาม [หลักฐานต้นทาง](manifests/STANDARDIZATION.json) ภาพ OpenCV BGR ปรับขนาดเชิงเส้นโดยรักษาสัดส่วน เติม letterbox ตรงกลางเป็นสี่เหลี่ยมด้วยค่า 114: auto=False, scaleup=True, rect=False ไม่ยืดภาพ แปลงเป็น RGB BCHW FP32 /255 รูปร่าง 1×3×640×640
-ใช้ CUDA:0 ตามข้อจำกัดการมองเห็น GPU เดิม, batch 1, imgsz 640, FP32, augment=False, retina_masks=True, agnostic_nms=False YOLO26 ใช้ nms=True เพื่อเลือกเส้นทาง one-to-many ก่อน fusion; backend end2end=False และ Person ของโมเดลคือ class 0 (`person`)
-AP confidence floor 0.001 (framework NMS ใช้ >0.001), fixed confidence ≥0.25, NMS box IoU 0.70, model max_det=1000 ถ้าตัวเลือกถึงเพดานหรือเกิด NMS truncation ให้หยุด ห้ามเปลี่ยนนโยบายเฉพาะโมเดลสร้าง mask binary ที่มิติต้นฉบับและกรอง mask ว่าง ใช้การบีบอัด bit และส่ง CPU แบบเดิม บันทึกไม่สูญเสียข้อมูล COCO RLE พร้อม class, confidence, bbox xyxy และมิติต้นฉบับ
+## Common inference
 
-## 4. ตัวประเมินและนโยบาย ignore
+One model at a time, CUDA:0 respecting existing visibility, batch 1, FP32,
+imgsz 640, no augmentation. Explicit `nms=True` selects YOLO26 one-to-many before
+fusion; assert backend end2end=False for all models. Exact COCO Person index 0
+and name `person` required. Confidence >0.001 as implemented by Ultralytics NMS,
+NMS box IoU 0.70, agnostic_nms=False, max_det=1000. This cap is independent of AP
+maxDet. Log post-NMS candidates before native empty-mask filtering and saved
+candidates before evaluator capping. Stop if 1000 is reached or NMS truncation
+warnings occur. No per-model candidate-policy changes.
 
-ใช้ frozen ตัวชี้วัด.py และ mots.py ตาม hash เดิม ไม่แก้นิยามการจับคู่ fixed ตัวชี้วัดเรียง confidence ลงโดยคงลำดับเมื่อเท่ากัน จับคู่หนึ่งต่อหนึ่งแบบ greedy ที่ mask IoU ≥0.50 เลือก IoU สูงสุด แล้ว GT object ID เมื่อเสมอ ให้ valid Person GT มาก่อน เฉพาะ prediction ที่ไม่มีคู่จึงตรวจพื้นที่ทับ union ของ class 10 เทียบพื้นที่ prediction: IOA ≥0.50 ให้ ignore มิฉะนั้นเป็น FP ไม่ตัด Person mask ตาม ignore
-TP/FP/FN รวมใช้คำนวณ Precision/Recall/F1 แบบ micro; TP-only IoU/Dice ใช้เฉพาะคู่ที่ผ่านการจับคู่จึงไม่รวม GT ที่พลาด AP เป็น Person-only COCO-style segmentation รายเฟรม: mask IoU 0.50:0.05:0.95, 101 จุด Recall และการเรียง confidence ค่า AP รวมมาจากข้อมูลทั้งหมด ไม่ใช่เฉลี่ย AP รายลำดับภาพ ไม่มี MOTS tracking ตัวชี้วัด
+Preserve pilot preprocessing: OpenCV BGR images, aspect-preserving linear resize,
+centered square letterbox, padding value 114, rect=False / auto=False, scaleup=True,
+no stretch; channel conversion to RGB BCHW FP32 /255. Network input must be
+1×3×640×640 for every model/frame. Record native dimensions and input shape.
+`retina_masks=True` uses native Ultralytics original-resolution mask reconstruction
+after undoing letterbox, binary threshold and native empty-mask removal. Pilot
+lossless GPU bit-packing and compact CPU transfer are preserved. Save compressed
+COCO RLE, class, confidence, xyxy bbox and source size for every prediction.
 
-## 5. preflight และ maxDet
+OOM/crash: record model/frame/exception/GPU/allocator state, stop. No easier
+settings for one model. Completed frames are atomic files; failed runs are kept.
+No automatic resume or silent overwrite. A future explicitly documented resume
+must verify manifest/config/checkpoint hashes and unique frame keys.
 
-ใช้ 100 เฟรมเดิม: 25 เฟรมต่อ sequence ตาม frozen manifest และทดสอบทุกโมเดลก่อน accuracy ตรวจ AP maxDet 100/200/300/1000 โดย 1000 เป็นค่าอ้างอิง ความต่างสัมบูรณ์ AP50/AP75/mAP50-95 ต้อง <0.0001 ทุกโมเดล
-ผลที่ตรึงใช้ AP maxDet=200 ซึ่งแยกจาก model max_det=1000 ตาม [ผล preflight](metrics/PREFLIGHT_MAXDET.csv) หาก 200 ไม่ผ่านต้องหยุดก่อน accuracy ไม่ลดการตั้งค่าเพราะโมเดลเล็กหรือปรับค่าเกณฑ์ให้ได้เปรียบ บันทึกการตัดสินใจและเวลาเดิมอยู่ในโพรโทคอลต้นฉบับ
+## Frozen evaluator
 
-## 6. การวัดเวลาและ VRAM
+Byte-identical snapshot of validated pilot `metrics.py` and `mots.py`, with
+SHA256 provenance in `manifests/source_manifest.json`. Run its regression suite
+read-only before preflight. Do not modify matching or definitions.
 
-ใช้ 100 เฟรมตาม timing manifest เดิม 10 warmups และ 3 รอบที่ไม่ถูกรบกวนต่อโมเดล รวม 300 observations ต่อโมเดล รักษาลำดับ seeded/cyclic เดิม seed 20260929 ใช้โมเดลทีละตัว แยกเวลาโหลด ล้าง cache หลังปล่อยโมเดลเก่าและ synchronize CUDA ที่ขอบเขตแต่ละ stage
-preprocessing รวมแปลงภาพ/H2D; inference คือ forward; postprocessing รวม NMS, mask native, binary validation, bit packing, ส่ง CPU และสร้าง prediction objects; pipeline เป็นผลรวมสาม stage วัด RLE preparation แยก ไม่รวมโหลด/อ่านและ decode ภาพ, GT, evaluator, visualization หรือ serialization ไม่บวก Ultralytics-inclusive diagnostic ซ้ำ
-สรุปค่าเฉลี่ย, median/P50, population std และ P95 จาก observations ที่สะอาด; FPS=1000/ค่าเฉลี่ย pipeline ms รีเซ็ต allocator peak หลัง warmup และรวมโมเดลที่อยู่ในหน่วยความจำรายงาน peak allocated/reserved เป็น MiB โดยค่าหลักใช้ allocated peak สูงสุดจากรอบที่ยอมรับ ไม่ใช่หน่วยความจำทั้ง GPU จาก nvidia-smi
+Person GT class 2; class 10 masks unioned per frame. Fixed metrics select saved
+predictions with confidence >=0.25, descending score and stable input ties.
+Greedy one-to-one match at mask IoU >=0.50; best IoU then GT object ID breaks ties.
+Valid Person GT has priority. Only unmatched predictions are ignored when
+intersection(prediction, union(ignore))/area(prediction) >=0.50. Otherwise FP.
+Person masks are not clipped. Dataset micro TP/FP/FN determine P/R/F1.
+Matched-only IoU and Dice=2IoU/(1+IoU) report mean, median, population std, P25/P75.
+These conditional TP statistics are not overall dataset mask quality.
 
-## 7. การรบกวนและข้อผิดพลาด
+AP uses frozen confidence-ranked Person-only COCO frame-level segmentation
+evaluator, mask IoUs 0.50:0.05:0.95, 101 recall points. Ignore crowd overlap is
+mapped to 1/0 at the fixed 0.50 prediction-area threshold, preserving valid-GT
+priority at every AP IoU. Report AP50/AP75/mAP50-95 on 0–1 scale. This is not
+official MOTS tracking evaluation; no tracking metrics are computed.
 
-ตรวจ GPU ก่อน/ระหว่าง/หลังการวัด หากมี compute PID อื่น หรือ idle utilization ก่อนโหลด >5% ให้ถือว่าทั้งรอบถูกรบกวน เก็บหลักฐานและตัดออกจากผลหลัก ทำซ้ำได้เฉพาะส่วนที่ขาดด้วยการตั้งค่าเดิมเมื่อ GPU ว่างและใช้ที่เก็บใหม่ ห้ามจัดอันดับเมื่อเวลาไม่ครบ
-เมื่อ OOM, crash, ไฟล์เสีย, ข้อมูลขาด, hash เปลี่ยน หรือตัวเลือกเต็มเพดาน ให้บันทึกโมเดล/เฟรม/สถานะแล้วหยุด ไม่ลด settings เฉพาะโมเดลไม่เขียนทับรอบเก่า การกลับมาทำงานต้องมีคำสั่งชัดเจนและตรวจ manifest/config/checkpoint/เฟรมที่ไม่ซ้ำก่อน ผลของ framework อยู่ภายใน repository เจ้าของการทดลอง
+Preflight evaluates saved predictions at maxDet 100/200/300/1000 without further
+inference. Require the cross-experiment common cap 200, whose absolute AP50, AP75 and mAP50-95
+differences from 1000 are each <0.0001 for all four models. 1000 is the reference,
+not evidence that an unobserved tail beyond model cap is harmless. Stop on model
+cap saturation, invalid/nonfinite metrics or failed compatibility. STOP if 200 fails; otherwise freeze 200
+in YAML and append decision before full benchmark starts.
 
-## 8. เอกสารและขอบเขตการทำงาน
+## Timing, memory and contamination
 
-ใช้ template ปัจจุบันของ [การศึกษาหลัก](https://github.com/folklazy/YOLO_Instance_Segmentation_MOTS20_Scaling_Study): README นำทาง, REPORT บันทึกเทคนิค, RESULTS สรุปตัวเลข, PRESENTATION วิเคราะห์ภาพ สร้างรายงานหลัง accuracy และเวลาครบทุกโมเดล ภาพสร้างได้จาก prediction ที่บันทึกไว้เท่านั้น ไม่รัน inference เพื่อเอกสาร ไม่ใช้คะแนนถ่วงน้ำหนักหรืออ้างนัยสำคัญ/ความเหนือกว่าสำหรับ CCTV ขั้นสุดท้าย
-ทั้งห้าขนาดเสร็จแล้ว ไม่เริ่ม benchmark ใหม่หรือสังเคราะห์ผล 17 โมเดลโดยอัตโนมัติ CSV การตั้งค่า checkpoint ข้อมูลและแหล่งรันเดิมคงเดิม
+Dedicated timing follows accuracy. Seed 20260929 permutes the four model names;
+three rounds cyclically rotate this seeded order. Save exact order in advance.
+Each run releases previous model, garbage collects and clears CUDA cache; model
+load/initialization time is separate. Ten untimed inferences cycle first ten
+subset frames. Reset allocator peak stats after warmup and record baseline.
+Read/decode each image before timing; synchronize CUDA at every stage boundary.
+
+Preprocessing includes transforms and H2D transfer; inference is forward pass;
+postprocessing includes NMS, native masks, binary validation, GPU bit-packing,
+compact CPU transfer and prediction objects, as in pilot. Total pipeline is
+preprocess+inference+postprocess. RLE encoding/evaluation preparation is timed
+separately. Exclude disk I/O, model loading, GT, metrics, visualization, CSV/JSON.
+Report mean, median/P50, population std and P95; FPS=1000/mean pipeline ms.
+Three repeats, identical order within the subset, 300 measured frames/model.
+Report peak allocated/reserved MiB and baseline, including resident model;
+allocator memory is not whole-device nvidia-smi memory.
+
+Collect nvidia-smi utilization, memory, temperature, power, clocks and processes
+before and after every run and periodically between timed frames (outside timers).
+Conservatively mark contaminated if any other compute PID is present or pre-load
+idle GPU utilization exceeds 5%. Exclude entire contaminated run from primary
+speed results; retain diagnostics. A contaminated round may be repeated unchanged
+when idle, otherwise speed comparison is incomplete. Never rank incomplete speed.
+
+## Outputs, analyses and final gate
+
+Fresh run directories and stdout/stderr, timestamps, settings, source/checkpoint
+hashes, GPU state, exceptions, candidate counts, progress, atomic RLE predictions.
+Regenerate accuracy from saved predictions; AP overall is pooled, not an average
+of sequence AP. Report per sequence and per frame, matched instances, ignore
+counts, GT size (area/bbox/source-normalized values) and relative mask area
+min/P10/P25/median/P75/P90/max. Crowd descriptions group by exact GT person count;
+do not equate density with annotated occlusion. No size thresholds invented.
+
+Main report has Thai summary, complete technical tables, plots from saved CSVs,
+predetermined qualitative sheets and preserved run summary. Final gate compares
+frame lists/counts, evaluator/config/maxDet/confidence/NMS/preprocessing/precision/
+resolution/GT, input hashes, metrics completeness and clean timing. Accuracy
+ranking uses mask mAP50-95; efficiency trade-offs have no combined weighted score.
+Adjacent video frames are correlated; no independent-image significance claim.
+Different model capacities and pretraining are confounders. MOTS20 alone cannot
+establish controlled blur, lighting, camera-angle or final CCTV robustness.
+
+
+## Cross-experiment commitments frozen before preflight
+
+Experiment 1 remains read-only. Use its exact saved ordered all-frame, preflight,
+timing and visualization manifests, verified against current images, dimensions,
+GT and sequence metadata before inference. Dataset audit and reference report
+SHA256 are in manifests/shared_input_audit.json. Recomputed GT area and crowd
+data must be byte-identical. The original reference evaluator, adapter and
+visualization implementations are preserved byte-for-byte in src/frozen_pilot.
+No Experiment 1 inference is rerun. Compare its preserved clean timing results.
+
+The 100-frame preflight tests 100/200/300/1000. Even if 100 converges, retain 200.
+If 200 fails any strict <0.0001 check, STOP before full inference and establish
+a common policy with the user. No unilateral cap or methodology changes.
+
+Timing uses Experiment 1's idle-gated clean repetition runner and identical
+measured loop, ten warmups, seed and cyclic family ordering. All contaminated
+rounds are excluded. Any required repetition retains the original records.
+
+Cross-tier differences are second-largest minus largest. AP, recall and F1
+percentage-point differences equal 100 times the difference on the 0–1 scale.
+Relative change is 100*(second-largest/largest-1), reported separately.
+Report inference and pipeline latency, mean-derived FPS, allocator peak VRAM,
+parameters and checkpoint size without assuming that smaller models are faster.
+No significance claim or arbitrary weighted score. Both experiments describe
+available model tiers, not capacity-controlled architecture superiority or final
+CCTV suitability, controlled blur/lighting/camera-angle/occlusion robustness.
+
+Before full inference freeze config, protocol, sources, dataset/checkpoint
+manifests, exact frame lists and Experiment 1 report hashes. Changes to model
+names, storage paths and the stricter cross-tier cap gate do not change evaluator
+semantics or the measurement method. This protocol is frozen before preflight;
+only its predeclared maxDet decision may be appended before full inference.
+
+## Preflight decision — 2026-10-01T03:55:43.787555+00:00
+
+Run `benchmark-20261001T0352Z` passed all four models, 100 frames each. Common AP maxDet = **200**. All three AP absolute differences from 1000 are <0.0001 for every model. See `metrics/benchmark-20261001T0352Z/preflight_maxdet.csv`. This decision precedes full accuracy.

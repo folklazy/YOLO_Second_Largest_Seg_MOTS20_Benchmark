@@ -1,6 +1,6 @@
-# รายการกราฟ Second-largest (L/C)
+# Canonical tier plots
 
-ค่าต้นทาง: [TIER_RESULTS.csv](../../metrics/TIER_RESULTS.csv) เรียงโมเดลตามตระกูลและใช้ค่าที่บันทึกไว้ ไม่รัน inference หรือเปลี่ยนค่าที่วัด
+Generated only from [TIER_RESULTS.csv](../../metrics/TIER_RESULTS.csv), preserving fixed model order and saved measurements. Historical run-scoped plots remain intact.
 
 - [01_mask_map50_95.png](01_mask_map50_95.png)
 - [02_ap50_ap75.png](02_ap50_ap75.png)
