@@ -25,3 +25,7 @@ outputs/visualizations/qualitative/*
 !outputs/visualizations/qualitative/case_02_comparison.png
 !outputs/visualizations/qualitative/case_03_comparison.png
 !outputs/visualizations/qualitative/case_04_comparison.png
+
+# Supplementary same-frame ROI evidence, reviewed with the full comparisons.
+!outputs/visualizations/qualitative/case_0[1-4]_focus.png
+!outputs/visualizations/qualitative/FOCUS_EVIDENCE.json
