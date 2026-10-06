@@ -60,7 +60,6 @@ Historical environment and frozen evidence verified; shared methodology: [Master
 | Highest FPS | YOLO26l-Seg | 13.089 |
 | Lowest VRAM | YOLO26l-Seg | 777.52 |
 
-Inference and pipeline latency are in ms/frame; FPS is derived from mean pipeline latency; VRAM is peak allocated MiB.
 
 ## 6. Key Findings
 
@@ -87,11 +86,7 @@ Historical PASS WITH WARNINGS retained: CPU NNPACK warnings during complexity in
 
 ## 10. Limitations
 
-This evaluates frame-level Person instance segmentation on MOTS20, rather than MOTS tracking. The 26,894 GT instances are frame-level annotations, not unique people. TP-only IoU/Dice are conditional on successful matching.
-
-Consecutive video frames are correlated, and no statistical significance test was performed; small differences are descriptive. Selected qualitative cases do not replace dataset-level metrics.
-
-The E/X and C/L checkpoints do not have equal capacity. These measurements do not establish robustness to blur, low light, camera angle or occlusion severity, or deployment suitability. They support candidate selection for later CCTV robustness evaluation only. No weighted score or architectural causal conclusion is used.
+ผลนี้เป็น Person instance segmentation รายเฟรมบน MOTS20 ไม่ใช่ MOTS tracking; TP-only IoU/Dice พิจารณาเฉพาะคู่ที่ match ได้ ภาพวิดีโอต่อเนื่องสัมพันธ์กันและไม่ได้ทดสอบ statistical significance ค่าใกล้กันควรอ่านว่า near-tied descriptively รุ่น E/X และ C/L ไม่ใช่ capacity เท่ากัน ผลยังไม่ยืนยัน blur, low-light, มุมกล้อง, ระดับ occlusion หรือความพร้อมใช้งาน CCTV; เป็น candidate for later CCTV robustness evaluation เท่านั้น
 
 ## 11. Reproducibility and Source Artifacts
 
@@ -111,4 +106,6 @@ The E/X and C/L checkpoints do not have equal capacity. These measurements do no
 
 ## Qualitative Analysis
 
-Four same-frame diagnostic comparisons from saved lossless predictions are discussed in [PRESENTATION_SUMMARY_TH.md](PRESENTATION_SUMMARY_TH.md). See [current case selection](outputs/visualizations/qualitative/selection_v2/CASE_SELECTION.md) and [active selection](manifests/QUALITATIVE_SELECTION.json) for selection reasons, shared and tier-specific behaviors, and evidence limits. Comparisons use original MOTS20 frames. No inference or measured values were changed for this documentation update.
+Same-frame visual evidence, observed failures and interpretation are in
+[PRESENTATION_SUMMARY_TH.md](PRESENTATION_SUMMARY_TH.md).
+Comparisons reuse saved RLE predictions and original MOTS20 frames; no inference rerun or benchmark value changes.
