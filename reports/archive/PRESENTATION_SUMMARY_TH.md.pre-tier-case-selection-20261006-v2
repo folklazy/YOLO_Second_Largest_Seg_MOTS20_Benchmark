@@ -14,9 +14,9 @@ Tier นี้เสร็จครบ 4 โมเดลบน MOTS20 ด้ว�
 
 ## การเลือกกรณีและการอ่านภาพ
 
-คัด 4 กรณีจาก 12 เฟรมใน frozen visualization manifest โดยอ่าน per-frame TP/FP/FN และตรวจ original/GT กับ saved masks เลือก 1 shared anchor (Case 2: MOTS20-09 / 000263) และอีก 3 diagnostic cases ตามพฤติกรรมของ tier นี้ มีทั้งข้อได้เปรียบ ข้อผิดพลาดร่วม กรณีสวนอันดับ และ near-tie/ผลคล้ายกันเพื่อลด cherry-picking ไม่ใช่การสุ่มตัวแทน dataset
-ภายในแต่ละ case ต้องใช้เฟรมเดียวกันครบทุกโมเดล ส่วนระหว่าง tier ใช้ภาพร่วมเมื่อมีเหตุผลในการเทียบ error เดียวกัน ไม่บังคับใช้ชุดภาพเหมือนกันทั้งหมด แต่ละ tier มี 4 cases; ชุดใหม่รวม 10 original frames ต่างกันจากเดิม 6 และเพิ่มฉาก MOTS20-11 ข้อมูลที่ซ้ำข้าม tier ไม่ใช่ตัวอย่างอิสระเพิ่ม
-[CASE_SELECTION.md](outputs/visualizations/qualitative/selection_v2/CASE_SELECTION.md) บันทึกเหตุผลและแหล่งหลักฐาน
+คัด 4 กรณีจาก 12 เฟรมใน frozen visualization manifest โดยอ่าน per-frame TP/FP/FN และตรวจภาพจริง
+เลือกทั้งข้อได้เปรียบ ข้อผิดพลาดร่วม กรณีสวนอันดับ และผลคล้ายกัน ไม่ใช่การสุ่มตัวแทน dataset
+[CASE_SELECTION.md](outputs/visualizations/qualitative/CASE_SELECTION.md) บันทึกเหตุผลและแหล่งหลักฐาน
 ภาพเดิมมี contact sheet แยกโมเดล จึงสร้าง comparison จาก lossless saved RLE และ original/GT โดยไม่ inference
 แถวแรกเป็น Original/GT; แถวถัดมาเรียง YOLO26, YOLO11, YOLOv9, YOLOv8;
 ซ้ายเป็น prediction ขวาเป็น unmatched overlay ทั้งหมดใช้ภาพเต็มเฟรมเดียวกันและ scale เท่ากัน
@@ -28,14 +28,14 @@ GT panel แสดงเฉพาะ Person; IGN ไม่ถูกนับเ�
 
 ### Case เหล่านี้ช่วยตัดสินใจอย่างไร
 
-ชุดนี้ใช้ประกอบการเลือกด้านความครบถ้วนของ instance และ unmatched output โดยอ่านร่วมกับ canonical metrics ไม่ได้ให้ผู้ชนะทุกภาพหรือใช้วัด latency/VRAM Case 2 เป็นเฟรมร่วมเพื่อเทียบข้อจำกัดบน source เดียวกัน อีก 3 cases เลือกตามพฤติกรรมของ tier; หากเฟรม diagnostic ตรงกับ tier อื่น เหตุผลต้องอยู่ใน CASE_SELECTION.md และไม่นับเป็นหลักฐานอิสระเพิ่ม 4 cases ไม่แทน 2,862 เฟรม
+ชุดนี้ใช้ประกอบการเลือกด้านความครบถ้วนของ instance และ unmatched output โดยอ่านร่วมกับ canonical metrics ไม่ได้ให้ผู้ชนะทุกภาพหรือใช้วัด latency/VRAM หลาย tier ใช้เฟรมเดิมเพื่อให้เปรียบเทียบภายใน tier ได้ตรงกัน จึงไม่ใช่ตัวอย่างอิสระจำนวนมาก และ 4 cases ไม่แทน 2,862 เฟรม
 
 | Case | Pain point / บทบาท | ใช้ประกอบการเลือกด้านใด |
 |---|---|---|
 | 1 | จำแนกโมเดล: GT 2002 เล็กและ FN ของ GT 2054 | เป็นหลักฐานเฉพาะเฟรมที่ YOLO26l เก็บ GT 2002 ได้ แต่อีกสามโมเดลไม่ผ่าน matching; ใช้ประกอบเมื่อ instance เล็กสำคัญ |
 | 2 | ข้อจำกัดร่วม: FN/FP ในกลุ่มคนกลางภาพ | ใช้เห็นข้อจำกัดร่วมก่อนเชื่ออันดับ mAP และตรวจว่าข้อผิดพลาดประเภทนี้ยอมรับได้หรือไม่ |
 | 3 | สวนอันดับ / ต่าง GT: TP เท่ากันแต่พลาดคนคนละ ID | ใช้เทียบ YOLO26l/YOLO11l ที่ counts เท่ากันแต่พลาดคนต่างชุด และตรวจคู่ใกล้ YOLOv9c/YOLOv8l ซึ่งมี trade-off TP/FP ต่างกัน |
-| 4 | nearby-mAP / counterexample: GT 2016 พื้นที่เล็กทางขวาหลังราว | ใช้พิจารณาความครบถ้วนของคนพื้นที่เล็ก: YOLO26l/YOLOv9c match GT 2016 ได้ ส่วน YOLO11l/YOLOv8l ไม่ผ่าน; YOLOv9c จึงเก็บได้มากกว่า YOLOv8l ในเฟรมนี้ |
+| 4 | ภาพควบคุม: valid Person ถูก match เหมือนกัน | ใช้ตรวจความคล้ายของผลในเฟรมนี้ โดยเฉพาะ YOLOv9c/YOLOv8l; ไม่ใช้จัด winner จากความรู้สึกว่าขอบสวยกว่า |
 
 ภาพขยายเป็น ROI เพิ่มเติมจาก original frames และ saved masks แถวแรก Original/GT ต่อด้วยโมเดลตามลำดับเดิม แต่ละคอลัมน์ใช้พิกัด/scale เดียวกันทุกโมเดล แถว Original/GT ใช้เส้นขาวแสดง valid GT; ในแถวโมเดลเส้นขาวคือ GT ที่ match เส้นส้มคือ FN; สีแดงคือ FP สีเทาคือ ignored prediction พิกัด ROI อยู่บนภาพ ภาพเต็มยังแสดงไว้เพื่อไม่ซ่อน error นอก ROI การขยายไม่เพิ่มรายละเอียดจากต้นฉบับ
 ค่าราย GT ด้านล่างเป็น diagnostic ของ saved predictions ที่ confidence ≥0.25: TP ใช้ IoU ของคู่ที่ evaluator จับจริง; FN แสดง IoU สูงสุดของ candidate ที่มี ไม่ใช่ AP และไม่เปลี่ยน benchmark ตัวเลข TP/FP/FN ในคำอธิบายเป็นของเต็มเฟรม ไม่ใช่จำนวนใน ROI
@@ -86,7 +86,7 @@ IoU 0.000 คือค่าที่ปัดสามตำแหน่ง ไ
 
 ## Case 2 — พลาดร่วมกันในกลุ่มคนซ้อนกัน
 
-เหตุผลที่เลือก: shared anchor ของทั้งห้า tier เพื่อเทียบข้อผิดพลาดบน source frame เดียวกัน;  แสดงข้อจำกัดร่วมและ FP ของทุกโมเดล แทนเลือกแต่ภาพที่ตัวนำได้เปรียบ · MOTS20-09 / 000263
+เหตุผลที่เลือก: แสดงข้อจำกัดร่วมและ FP ของทุกโมเดล แทนเลือกแต่ภาพที่ตัวนำได้เปรียบ · MOTS20-09 / 000263
 
 ### ภาพเปรียบเทียบ
 
@@ -177,64 +177,65 @@ YOLO26l มี Recall รวมสูงสุด 0.834387 แต่ไม่ไ
 
 **ขอบเขตหลักฐาน:** GT 2017 มี prediction ของ YOLOv8l ที่ใกล้เกณฑ์ matching; ไม่ควรอ่าน FN ว่าไม่มี detection ทุกครั้ง
 
-## Case 4 — คนหลังราวที่คู่ mAP ใกล้กันเก็บได้ต่างกัน
+## Case 4 — เก็บคนเหมือนกัน แม้คะแนนรวมต่างกัน
 
-เหตุผลที่เลือก: ตรวจคู่ YOLOv9c/YOLOv8l ในฉากที่ไม่ได้ปรากฏในชุดเดิม และมีข้อผิดพลาดร่วมไว้เทียบ · MOTS20-11 / 000001
+เหตุผลที่เลือก: ตรวจผลที่คล้ายกันและคู่ near tie โดยไม่มี FN/FP ของ valid GT ในเฟรมนี้ · MOTS20-09 / 000001
 
 ### ภาพเปรียบเทียบ
 
-![Case 4 Second_Largest MOTS20-11 frame 1](outputs/visualizations/qualitative/selection_v2/case_04_comparison.png)
+![Case 4 similar outputs](outputs/visualizations/qualitative/case_04_comparison.png)
 
 ภาพขยายจุดที่ต้องตรวจ (ใช้คู่กับภาพเต็มด้านบน):
 
-![Case 4 focus — identical region across models](outputs/visualizations/qualitative/selection_v2/case_04_focus.png)
+![Case 4 focus — identical region across models](outputs/visualizations/qualitative/case_04_focus.png)
 
 ### สิ่งที่เห็นจากภาพ
 
-- GT 2016 เป็นพื้นที่ Person เล็กที่มองเห็นเหนือราวด้านขวา; YOLO26l/YOLOv9c match ได้ แต่ YOLO11l/YOLOv8l มี FN
-- ทุกโมเดลมี FN ของ GT 2013/2015/2029 หลังราวและ GT 2079 ด้านหลังคนกลางภาพ; ROI ขวาแสดง 2013/2079 ที่ยังไม่ผ่าน matching
-- YOLO26l/YOLO11l/YOLOv9c/YOLOv8l มี TP 10/9/10/9 และ FN 4/5/4/5; ไม่มี FP ในทั้งสี่โมเดล คนใหญ่ด้านหน้าถูกเก็บในหลายโมเดล
+- ทุกโมเดล match valid GT ครบ 6 instances และไม่มี FP/FN; คนใหญ่ริมขอบภาพ คนหน้าร้าน และ Person ตัวเล็กตรงกลางมี mask ในทุกโมเดล
+- รูปร่าง mask หลักดูคล้ายกันเมื่อดูเต็มเฟรม แต่ขอบ/พื้นที่ mask ไม่ตรงกันทุกพิกเซล และตำแหน่ง IGN อาจต่างกัน
+
 
 ตรวจ matching ราย GT จาก saved masks:
 
 | GT | YOLO26l-Seg | YOLO11l-Seg | YOLOv9c-Seg | YOLOv8l-Seg |
 |---|---|---|---|---|
-| 2013 | FN; best IoU 0.000 | FN; best IoU 0.000 | FN; best IoU 0.000 | FN; best IoU 0.000 |
-| 2016 | TP IoU 0.665 | FN; best IoU 0.000 | TP IoU 0.559 | FN; best IoU 0.000 |
-| 2079 | FN; best IoU 0.005 | FN; best IoU 0.009 | FN; best IoU 0.012 | FN; best IoU 0.012 |
+| 2021 | TP IoU 0.768 | TP IoU 0.699 | TP IoU 0.729 | TP IoU 0.716 |
+| 2022 | TP IoU 0.770 | TP IoU 0.725 | TP IoU 0.711 | TP IoU 0.738 |
 
-IoU ที่ปัดเป็น 0.000 ไม่ยืนยันว่าไม่มี prediction; FN หมายถึงไม่มีคู่ผ่าน evaluator ตาม policy เดิม
+IoU 0.000 คือค่าที่ปัดสามตำแหน่ง ไม่ยืนยันว่าไม่มี prediction; candidate อาจมีพื้นที่ทับ GT ต่ำหรือมีคู่กับ GT อื่นแล้ว FN จึงต้องอ่านร่วมกับภาพและ full-frame matching
 
 ### วิเคราะห์
 
-คนใหญ่ในภาพเต็มทำให้ผลดูใกล้กัน แต่ ROI ที่ราวแสดง instance-level difference ซึ่งเปลี่ยนความครบถ้วนได้จริง GT 2016 ของ YOLOv9c มี matched IoU 0.559 เทียบกับ YOLO26l 0.665; เป็นการเทียบคนเดียวกัน ไม่ใช่ mean ของคนคนละชุด อีก ROI แสดงข้อจำกัดร่วมเพื่อไม่ให้กรณีนี้ถูกอ่านเป็นชัยชนะต่อทุกคนตัวเล็ก
+ภาพเต็มเฟรมที่ดูใกล้กันไม่ได้หมายถึง segmentation เท่ากันทุกขอบ โดยเฉพาะ instance เล็กที่รายละเอียดลดลงเมื่อย่อภาพ ไม่มีฐานให้เรียกความต่างของขอบเพียงเล็กน้อยว่า superiority ที่มีนัยสำคัญ กรณีนี้ยังช่วยกันไม่ให้สรุปจากกรณีล้มเหลวเพียงอย่างเดียว
 
 ### เชื่อมกับผลเชิงตัวเลข
 
-YOLOv9c/YOLOv8l มี mAP 0.517646/0.520145 ค่อนข้างใกล้กัน แม้ YOLOv8l มี Recall รวมสูงกว่า เฟรมนี้ YOLOv9c กลับ match มากกว่าหนึ่ง GT กรณีนี้ร่วมกับ Case 3 จึงแสดง error trade-off คนละทิศทาง ไม่ใช่หลักฐานว่าคู่ใดเหนือกว่าทุกเฟรม
+Mean matched-mask IoU ของเฟรมนี้: YOLO26l-Seg 0.800973; YOLO11l-Seg 0.763002; YOLOv9c-Seg 0.763739; YOLOv8l-Seg 0.763904
+แม้ TP เท่ากันแต่ mask overlap ไม่เท่ากัน ซึ่งสอดคล้องกับการที่ mAP/AP75 ประเมินมากกว่าจำนวน detection; ไม่ใช่การคำนวณ AP ใหม่จากเฟรมนี้
+
 
 ### ใช้ประกอบการเลือกอย่างไร
 
-**Pain point / บทบาท:** nearby-mAP / counterexample — GT 2016 พื้นที่เล็กทางขวาหลังราว
+**Pain point / บทบาท:** ภาพควบคุม — valid Person ถูก match เหมือนกัน
 
-**ใช้ประกอบการเลือก:** ใช้พิจารณาความครบถ้วนของคนพื้นที่เล็ก: YOLO26l/YOLOv9c match GT 2016 ได้ ส่วน YOLO11l/YOLOv8l ไม่ผ่าน; YOLOv9c จึงเก็บได้มากกว่า YOLOv8l ในเฟรมนี้
+**ใช้ประกอบการเลือก:** ใช้ตรวจความคล้ายของผลในเฟรมนี้ โดยเฉพาะ YOLOv9c/YOLOv8l; ไม่ใช้จัด winner จากความรู้สึกว่าขอบสวยกว่า
 
-**ขอบเขตหลักฐาน:** Recall รวมของ YOLOv9c ต่ำกว่า YOLOv8l แม้เฟรมนี้มี TP มากกว่า; ไม่จัดอันดับ dataset ใหม่จาก GT เดียว และทุกโมเดลยังมี FN ร่วม
+**ขอบเขตหลักฐาน:** ทุกโมเดลมี TP 6 / FP 0 / FN 0; ไม่มี pain point ด้าน missed/extra instance ให้แยกโมเดลในเฟรมนี้
 
 ## Failure Analysis
 
 | Failure pattern | Models observed | Visual case | Interpretation |
 |---|---|---|---|
-| Person พื้นที่เล็กไม่มีคู่ผ่านเกณฑ์ | ทุกโมเดล (2054); YOLO11l/YOLOv9c/YOLOv8l (2002) | Case 1 | ข้อผิดพลาดต่าง GT ต้องดู coverage ร่วมกับ matching |
-| Unmatched GT ในกลุ่มคน | ทุกโมเดล | Case 2 | ข้อจำกัดร่วม ไม่อนุมานความถี่หรือสาเหตุ |
-| คนพื้นที่เล็กหลังราวไม่ผ่าน matching | YOLO11l/YOLOv8l (2016); ทุกโมเดล (2013/2079) | Case 4 | ความต่างของ GT 2016 ไม่ชดเชย FN ร่วมทั้งหมด |
-| Unmatched outputs / extra masks | ทุกโมเดลใน Case 2; YOLOv8l ใน Case 3 | Case 2/3 | พิจารณา TP/FP ร่วมกัน; ไม่ใช่คนที่ไม่มีจริงโดยอัตโนมัติ |
+| Missed / unmatched Person พื้นที่เล็ก | ทุกโมเดล (GT 2054); YOLO11 และ YOLOv8 และ YOLOv9c (GT 2002) | Case 1 | บริเวณเล็กยังไม่ผ่าน matching; ไม่สรุปว่าไม่มี detection ทุกครั้ง |
+| Unmatched GT ในกลุ่มคนซ้อนกัน | ทุกโมเดล | Case 2 | FN ร่วมของ 2001/2002/2011; ยังระบุสาเหตุแน่ชัดไม่ได้ |
+| False-positive / unmatched mask บนคนจริง | ทุกโมเดล | Case 2 | Mask แดงไม่ match valid GT; ไม่ใช่ nonexistent person โดยอัตโนมัติ |
+| Extra mask บริเวณวัตถุใต้ร่มริมขวา | YOLOv8l | Case 3 | FP ตาม benchmark; เก็บบริเวณเต็มเฟรมไว้ให้ตรวจสอบ |
 
-เป็นประเภท error ที่พบในกรณีที่เลือก ไม่ใช่อัตราหรือความถี่ทั้ง dataset ไม่ระบุ merging/fragmentation/boundary leakage หากไม่มีหลักฐานพอ
+เป็นประเภท error ที่พบในกรณีที่เลือก ไม่ใช่อัตราหรือความถี่ของทั้ง dataset ไม่ระบุ merging/fragmentation/boundary leakage หากยังไม่มีหลักฐานพอ
 
 ## Near-tie visual check
 
-YOLOv9c/YOLOv8l มี mAP 0.517646/0.520145 ค่อนข้างใกล้กัน Case 3 YOLOv8l เก็บได้มากกว่าแต่มี FP เพิ่ม ขณะที่ Case 4 YOLOv9c เก็บ GT 2016 เพิ่มได้โดยไม่มี FP ทั้งคู่ ภาพจึงแสดง error trade-off คนละทิศทาง แม้ Recall รวมของ YOLOv8l สูงกว่า ไม่มีฐานให้ประกาศความเหนือกว่าทุกเฟรมหรือ statistical superiority; inference YOLOv9c/YOLO11l ต่าง 0.094 ms ตาม benchmark ซึ่งภาพใช้ยืนยันไม่ได้
+YOLOv9c กับ YOLOv8l มี mAP ค่อนข้างใกล้กัน (0.517646 vs 0.520145) ใน Case 4 เก็บครบ 6 คนและดูใกล้กัน แต่ Case 3 YOLOv8l เก็บได้มากกว่าและมี FP เพิ่ม จึงอาจได้คะแนนใกล้จากคนละ trade-off; inference YOLOv9c/YOLO11l ต่าง 0.094 ms ซึ่งภาพไม่สามารถยืนยันความต่างด้านเวลาได้
 
 ## สิ่งที่เรียนรู้จากภาพจริง
 
@@ -258,21 +259,22 @@ Case 3 มีโมเดลอื่นเก็บ valid Person มากก�
 
 ### Observation 4
 
-Case 4 YOLO26l/YOLOv9c match GT 2016 ได้ แต่ YOLO11l/YOLOv8l พลาด; ทุกโมเดลยังพลาด 2013/2079
+Case 4 ทุกโมเดลเก็บ valid GT ครบ แต่ matched-mask IoU ไม่เท่ากัน
 
-**Interpretation:** กรณีนี้แยกพฤติกรรมราย GT ของคู่คะแนนใกล้ และเป็นข้อยกเว้นต่ออันดับ Recall รวม ไม่ใช่ผู้ชนะทุกคนพื้นที่เล็ก
+**Interpretation:** ความคล้ายที่ระดับภาพเต็มเฟรมกับความเท่ากันของ mask เป็นคนละระดับของหลักฐาน ไม่ควรตัดสิน AP75 จากภาพย่ออย่างเดียว
 
 ## เมื่อดูทั้งตัวเลขและภาพร่วมกัน
 
-YOLO26l นำ mAP/AP75/Recall รวม ส่วนภาพช่วยตรวจว่าความต่างอยู่ที่ GT ใดและมี output เพิ่มแบบไหน Case 1 แสดง instance ที่เก็บเพิ่ม แต่ Case 2 ยังมีข้อผิดพลาดร่วม และ Case 3 เป็นกรณีสวนอันดับ coverage Case 4 แยก GT 2016 ของคู่ mAP ใกล้กัน พร้อมข้อจำกัดร่วม จึงไม่ใช้ภาพใดภาพหนึ่งอธิบายคะแนนทั้ง dataset AP75 รวม confidence ranking และ stricter IoU ซึ่งภาพที่ confidence 0.25/matching 0.50 แสดงไม่ครบ; TP-only quality อาจใช้ GT คนละชุด
-
-Latency และ VRAM เป็น system-level measurements อ่านจาก benchmark แยกจากภาพ segmentation ไม่สามารถอนุมานสาเหตุหรือวัดสองค่านี้จาก mask
+mAP และ AP75 ของ YOLO26l สูงสุดสอดคล้องกับ overlap เฉลี่ยรายเฟรมใน Case 4 และการเก็บ instance เล็กใน Case 1 แต่ Case 3 สวนอันดับ Recall รวม จึงไม่ควรใช้ภาพใดภาพหนึ่งอธิบายคะแนนทั้ง dataset AP75 ยังรวม confidence ranking และ stricter IoU ซึ่งภาพที่ threshold 0.25 แสดงไม่ครบ
+Recall ช่วยบอกความครอบคลุมระดับ dataset; ภาพ FN ช่วยระบุว่าพลาดส่วนไหนในตัวอย่าง
+Latency และ VRAM เป็น system-level measurements ต้องอ่าน benchmark แยกจากภาพ segmentation;
+ไม่สามารถอนุมานว่าหน้ากากสวยกว่าจึงเร็วกว่า ใช้ memory น้อยกว่า หรือเป็นสาเหตุของ resource trade-off
 
 ## ถ้าพิจารณาทั้งผลเชิงตัวเลขและภาพ
 
 | Priority | Candidate | Evidence |
 |---|---|---|
-| Accuracy | YOLO26l-Seg | mAP/AP75/Recall รวมสูงสุด; Case 1 แสดง GT ที่เก็บเพิ่ม; Case 2/3/4 ช่วยตรวจข้อจำกัดและ error trade-off |
+| Accuracy | YOLO26l-Seg | mAP/AP75/Recall รวมสูงสุด; Case 1/4 ช่วยตีความ แต่ Case 2/3 แสดงข้อจำกัด |
 | Speed | YOLOv9c-Seg (inference); YOLO26l-Seg (pipeline) | Clean timing benchmark; ภาพไม่วัดเวลา |
 | Low VRAM | YOLO26l-Seg | Peak allocated VRAM benchmark; ภาพไม่วัด memory |
 | Balanced | YOLO26l-Seg หากยอมรับ inference 36.266 ms | Accuracy/pipeline/VRAM นำพร้อมกัน แต่ inference ไม่เร็วสุด; Case 3 ยังมีโมเดลเก็บคนได้มากกว่า |
@@ -290,5 +292,5 @@ Latency และ VRAM เป็น system-level measurements อ่านจา
 ## รายละเอียดเต็ม
 
 [Quantitative summary](RESULTS_SUMMARY_TH.md) · [REPORT.md](REPORT.md) · [TIER_RESULTS.csv](metrics/TIER_RESULTS.csv) ·
-[Case evidence](outputs/visualizations/qualitative/selection_v2/CASE_EVIDENCE.json) ·
+[Case evidence](outputs/visualizations/qualitative/CASE_EVIDENCE.json) ·
 [Master Study](https://github.com/folklazy/YOLO_Instance_Segmentation_MOTS20_Scaling_Study)
