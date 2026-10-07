@@ -107,7 +107,7 @@ The E/X and C/L checkpoints do not have equal capacity. These measurements do no
 
 ## 12. Relation to Full Scaling Study
 
-All five tiers and the compatible 17-model Master synthesis are complete. See the [Master Study](https://github.com/folklazy/YOLO_Instance_Segmentation_MOTS20_Scaling_Study) for cross-tier scaling, separate Pareto objectives and post-study derived analyses. This tier retains its original measured results and frozen protocol; this editorial revision starts no benchmark.
+[Master Study](https://github.com/folklazy/YOLO_Instance_Segmentation_MOTS20_Scaling_Study) — this is one tier only. The 17-model synthesis remains gated on all five tiers and explicit authorization.
 
 ## Qualitative Analysis
 
